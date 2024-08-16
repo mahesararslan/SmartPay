@@ -43,7 +43,7 @@ export const authOptions = {
                 return {
                     id: user.id.toString(),
                     name: user.name,
-                    phoneNumber: user.number
+                    email: user.number
                 }
             } catch(e) {
                 console.error(e);
