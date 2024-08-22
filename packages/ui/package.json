@@ -10,7 +10,8 @@
     "./center": "./src/Center.tsx",
     "./select": "./src/Select.tsx",
     "./textinput": "./src/TextInput.tsx",
-    "./passwordinput": "./src/PasswordInput.tsx"
+    "./passwordinput": "./src/PasswordInput.tsx",
+    "./Avatar": "./src/Avatar.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
