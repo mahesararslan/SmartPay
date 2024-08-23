@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export const PasswordInput = ({ label, onChange, placeholder }: {
     label: string;
-    onChange: (value: string) => void;
+    onChange: (value: string) => void;  // Update the onChange prop to accept a string value
     placeholder: string;
 }) => {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -11,12 +11,16 @@ export const PasswordInput = ({ label, onChange, placeholder }: {
         setPasswordVisible(!isPasswordVisible);
     };
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.value); // Pass only the value to the parent component
+    };
+
     return (
         <div className="pt-2">
             <label className="block mb-2 text-sm font-medium text-gray-900">{label}</label>
             <div className="relative">
                 <input
-                    onChange={(e) => onChange(e.target.value)}
+                    onChange={handleChange}  // Use handleChange to manage the input's value
                     id="hs-toggle-password"
                     type={isPasswordVisible ? "text" : "password"}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"

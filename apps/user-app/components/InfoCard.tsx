@@ -1,7 +1,8 @@
 import { Card } from "@repo/ui/card";
 
-export const InfoCard = ({ name, number }: {
+export const InfoCard = ({ name, email, number }: {
     name: string;
+    email: string;
     number: string;
 }) => {
     return <Card title={"Account Information"}>
@@ -15,18 +16,18 @@ export const InfoCard = ({ name, number }: {
         </div>
         <div className="flex justify-between border-b border-slate-300 pb-2">
             <div>
-                Location
+                Email
             </div>
             <div>
-                Pakistan
+                {email}
             </div>
         </div>
         <div className="flex justify-between border-b border-slate-300 py-2">
             <div>
-                City
+                Location
             </div>
             <div>
-                Islamabad
+                Pakistan
             </div>
         </div>
         <div className="flex justify-between border-b border-slate-300 py-2">

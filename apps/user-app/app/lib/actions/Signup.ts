@@ -1,6 +1,6 @@
 "use server"
 
-import db from "@repo/db/client";
+import prisma from "@repo/db/client";
 import bcrypt from "bcrypt";
 
 export default async function Signup(
@@ -9,7 +9,7 @@ export default async function Signup(
     phone: string,
     password: string
 ) {
-    const userExist = await db.user.findFirst({
+    const userExist = await prisma.user.findFirst({
         where: {
             number: phone,
         },
@@ -25,13 +25,23 @@ export default async function Signup(
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-        const user = await db.user.create({
-            data: {
-                name,
-                email,
-                number: phone,
-                password: hashedPassword,
-            },
+        await prisma.$transaction(async (tx) => {
+            const user = await tx.user.create({
+                data: {
+                    name,
+                    email,
+                    number: phone,
+                    password: hashedPassword,
+                },
+            });
+    
+            const balance = await tx.balance.create({
+                data: {
+                    amount: 0,
+                    userId: user.id,
+                    locked: 0,
+                },
+            });
         });
 
         return {
