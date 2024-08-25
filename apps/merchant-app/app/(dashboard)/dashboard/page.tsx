@@ -16,7 +16,7 @@ export default function() {
                             <Link href={"/transfer"} >
                                 <div className="flex gap-2 lg:flex-none lg:gap-0 xl:flex xl:gap-2">
                                     <MoneyIcon />
-                                    <p>Cash Out {">"}</p>    
+                                    <p>Transfer  {">"}</p>    
                                 </div> 
                             </Link>
                             <div className="flex gap-2" >

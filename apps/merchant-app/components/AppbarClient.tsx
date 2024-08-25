@@ -9,8 +9,8 @@ export function AppbarClient() {
 
   return (
    <div>
-      <Appbar onSignin={signIn} onSignout={async () => {
-          await signOut({ callbackUrl: "/signin" });
+      <Appbar onSignin={signIn} onSignout={async () => { // @ts-ignore
+          await signOut({ callbackUrl: "/api/auth/signin", baseUrl: process.env.NEXTAUTH_URL });
         }} user={session.data?.user} />
    </div>
   );

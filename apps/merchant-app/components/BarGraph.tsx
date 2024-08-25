@@ -1,5 +1,9 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import ApexCharts from 'react-apexcharts';
+
+// @ts-ignore
+const BarGraphComponent = dynamic(() => import('apexcharts'), { ssr: false });
 
 const BarGraph = () => {
   const options = {
