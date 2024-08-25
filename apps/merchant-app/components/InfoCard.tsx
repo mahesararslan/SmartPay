@@ -1,9 +1,10 @@
+"use server"
 import { Card } from "@repo/ui/card";
 
-const InfoCard = ({ name, email }: {
-    name: string;
-    email: string;
-}) => {
+
+async function InfoCard({ name, email, location} : {name: string, email: string, location: string}) {
+    
+
     return <Card title={"Account Information"}>
         <div className="flex justify-between border-b border-slate-300 py-2">
             <div>
@@ -26,7 +27,7 @@ const InfoCard = ({ name, email }: {
                 Location
             </div>
             <div>
-                Pakistan
+                {location}
             </div>
         </div>
     </Card>

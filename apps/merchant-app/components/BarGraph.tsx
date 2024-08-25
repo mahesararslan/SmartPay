@@ -1,31 +1,37 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import ApexCharts from 'react-apexcharts';
+"use client";
 
-// @ts-ignore
-const BarGraphComponent = dynamic(() => import('apexcharts'), { ssr: false });
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from 'react';
+
+// Dynamically import the ApexCharts component with SSR disabled
+const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const BarGraph = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const series = [
+    {
+      name: "Income",
+      color: "#31C48D",
+      data: [1420, 1620, 1820, 1420, 1650, 2120],
+    },
+    {
+      name: "Expense",
+      data: [788, 810, 866, 788, 1100, 1200],
+      color: "#F05252",
+    }
+  ];
+
   const options = {
-    series: [
-      {
-        name: "Income",
-        color: "#31C48D",
-        data: [1420, 1620, 1820, 1420, 1650, 2120],
-      },
-      {
-        name: "Expense",
-        data: [788, 810, 866, 788, 1100, 1200],
-        color: "#F05252",
-      }
-    ],
     chart: {
       sparkline: {
         enabled: false,
       },
       type: "bar",
-      width: "100%",
-      height: 400,
       toolbar: {
         show: false,
       }
@@ -54,13 +60,14 @@ const BarGraph = () => {
     tooltip: {
       shared: true,
       intersect: false,
-      formatter: function (value: any) {
-        return "$" + value;
+      y: {
+        formatter: function (value: any) {
+          return "$" + value;
+        }
       }
     },
     xaxis: {
       labels: {
-        show: true,
         style: {
           fontFamily: "Inter, sans-serif",
           cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
@@ -79,7 +86,6 @@ const BarGraph = () => {
     },
     yaxis: {
       labels: {
-        show: true,
         style: {
           fontFamily: "Inter, sans-serif",
           cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
@@ -98,8 +104,11 @@ const BarGraph = () => {
   };
 
   return (
-    <div className="chart-container"> {/* @ts-ignore */}
-      <ApexCharts options={options} series={options.series} type="bar" height={400} />
+    <div className="chart-container">
+      {/* Ensure that ApexCharts only renders on the client side */}
+      {isClient && ( // @ts-ignore
+        <ApexCharts options={options} series={series} type="bar" height={400} />
+      )}
     </div>
   );
 };
