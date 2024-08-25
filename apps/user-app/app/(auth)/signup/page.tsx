@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useState } from "react";
 import Signup from "../../lib/actions/Signup";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
+import logo from "../../logo.png";
 
 export default function Page() {
     const [name, setName] = useState("");
@@ -16,9 +18,13 @@ export default function Page() {
     return <div className="h-screen flex justify-center flex-col items-center bg-[#ebe6e6] pt-10" >
         <div className="flex justify-center bg-white rounded-xl px-10 py-10">
             <div>
+                <a href="#" className="flex justify-center items-center mb-6 text-4xl pb-4 border-b-2 font-semibold text-gray-900">
+                    <Image src={logo} alt="Flowbite" width={50} height={50} />
+                    SmartPay
+                </a>
                 <div className="px-10">
                     <div className="text-3xl font-extrabold text-black text-center">
-                        Sign up
+                        Create a new account
                     </div>
                 </div>
                 <div className="pt-8">

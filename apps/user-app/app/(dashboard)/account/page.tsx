@@ -6,6 +6,7 @@ import { PasswordInput } from "@repo/ui/passwordinput";
 import { useEffect, useState } from "react";
 import GetUser from "../../lib/actions/getUser";
 import UpdateProfile from "../../lib/actions/updateProfile";
+import { BadAlert, GoodAlert } from "../../../components/BadAlert";
 
 export default function Profile() {
     const [name, setName] = useState("");
@@ -14,13 +15,14 @@ export default function Profile() {
     const [currentPassword, setCurrentPassword] = useState("");
     const [nameError, setNameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [alertMessage, setAlertMessage] = useState("");
+    const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
 
     useEffect(() => {
-        GetUser()
-            .then((res) => {
-                setName(res?.name || "");
-                setEmail(res?.email || "");
-            })
+        GetUser().then((res) => {
+            setName(res?.name || "");
+            setEmail(res?.email || "");
+        });
     }, []);
 
     const handleSaveChanges = async () => {
@@ -28,29 +30,43 @@ export default function Profile() {
             setNameError("Name cannot be empty");
             return;
         }
-    
+
         if ((newPassword && !currentPassword) || (!newPassword && currentPassword)) {
             setPasswordError("Both passwords must be filled or both must be empty");
             return;
         }
-    
+
         if (newPassword && newPassword.length < 6) {
             setPasswordError("Password must be at least 6 characters long");
             return;
         }
-    
+
         console.log(name, currentPassword, newPassword);
-        
+
         // Only call UpdateProfile once
         const res = await UpdateProfile(name, currentPassword, newPassword);
-        
-        alert(res.message);
+
+        if (res.message === "Profile updated successfully") {
+            setIsSuccess(true);
+            setAlertMessage(res.message);
+        } else {
+            setIsSuccess(false);
+            setAlertMessage(res.message);
+        }
+
+        setTimeout(() => {
+            setAlertMessage("");
+            setIsSuccess(null);
+        }, 10000);
     };
     
     return <div>
         <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold mx-5 sm:mx-0 flex justify-center md:block md:ml-10">
             Account
         </div>
+        {isSuccess !== null && (
+            isSuccess ? <GoodAlert message={alertMessage} /> : <BadAlert message={alertMessage} />
+        )}
         <div className="md:grid md:grid-cols-12">
             <div className="p-10 flex flex-col justify-center items-center border shadow-md md:p-5 md:max-w-64 md:mr-5 md:col-span-4 lg:col-span-3">
                 <Avatar name={name} />

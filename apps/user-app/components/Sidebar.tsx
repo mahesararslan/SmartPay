@@ -1,5 +1,7 @@
 "use client"
+import Image from "next/image";
 import { useState } from "react";
+import logo from "../app/logo.png";
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +36,10 @@ export function Sidebar() {
           id="drawer-navigation-label"
           className="text-base font-semibold text-gray-500 uppercase dark:text-gray-400"
         >
-          Menu
+        <a href="#" className="mt-3 flex items-center mb-6 text-2xl font-semibold text-white">
+            <Image src={logo} alt="Flowbite" width={50} height={50} />
+            SmartPay
+        </a>
         </h5>
         <button
           type="button"

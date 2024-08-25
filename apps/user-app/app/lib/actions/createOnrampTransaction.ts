@@ -28,11 +28,13 @@ export async function createOnRampTransaction(provider: string, amount: number) 
                 }
             });
         
-            const balance = await tx.balance.create({
+            const balance = await tx.balance.update({
+                where: {
+                    userId: Number(session?.user?.id)
+                },
                 data: {
-                    amount: amount * 100,
-                    userId: Number(session?.user?.id),
-                    locked: 0 
+                    amount: ((amount * 100) - (amount * 10/100)),
+                    locked: (amount * 10/100) * 100
                 }
             })
         });

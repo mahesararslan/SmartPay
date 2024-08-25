@@ -13,6 +13,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "../../packages/ui/src/Sidebar.tsx"  ],
+, "components/Sidebar.tsx"  ],
   "exclude": ["node_modules"]
 }

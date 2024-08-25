@@ -13,7 +13,10 @@ export function HistoryCard({
   }) {
     return (
       <div className="border p-6 bg-white rounded-xl mx-5 sm:mx-0 mt-8 md:mt-0">
-        <Avatar name={name} />
+        <div className="flex justify-between">
+          <Avatar name={name} />
+          {type === "sent" ? <div className="text-blue-500 font-semibold text-2xl">Sent</div> : <div className="text-green-400 font-semibold text-2xl">Received</div>}
+        </div>
         <div>
           <div className="flex justify-between border-b border-slate-300 pb-2 mt-5">
             <div>Name</div>
