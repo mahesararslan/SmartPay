@@ -5,16 +5,18 @@ import { Select } from "@repo/ui/select";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
 import { createOnRampTransaction } from "../app/lib/actions/createOnrampTransaction";
+import { useRouter } from "next/navigation";
 
 const SUPPORTED_BANKS = [{
     name: "HBL",
-    redirectUrl: "https://hblibank.com.pk/netbanking"
+    redirectUrl: "/dummy-bank-confirmation/hbl"
 }, {
     name: "NBP",
-    redirectUrl: "https://ibanking.nbp.com.pk/login"
+    redirectUrl: "/dummy-bank-confirmation/nbp"
 }];
 
-export const AddMoney = () => {
+export const AddMoney = ({ session }: { session:any}) => {
+    const router = useRouter();
     const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
     const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
     const [value, setValue] = useState(0)
@@ -35,8 +37,8 @@ export const AddMoney = () => {
         }))} />
         <div className="flex justify-center pt-4">
             <Button onClick={async () => {
-                await createOnRampTransaction(provider, value);
-                window.location.reload();
+                const res = await createOnRampTransaction(provider, value);
+                router.push(`${redirectUrl}/?email=${session?.user?.id}&token=${res.token}&amount=${value}&number=${session?.user?.email}` || "");  
             }}>
             Add Money
             </Button>

@@ -34,6 +34,7 @@ async function getOnRampTransactions() {
 }
 
 export default async function() {
+    const session = await getServerSession(authOptions);
     const balance = await getBalance();
     const transactions = await getOnRampTransactions();
 
@@ -43,7 +44,7 @@ export default async function() {
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
             <div>
-                <AddMoney />
+                <AddMoney session={session} />
             </div>
             <div>
                 <BalanceCard amount={balance.amount} locked={balance.locked} />
