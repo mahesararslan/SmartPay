@@ -65,8 +65,8 @@ To get started with the SmartPay project, follow these steps:
     ```bash
    npm install
     ```
-    -Copy the .env.example files to .env in each relevant directory.
-    -Replace the placeholder values in the .env files with your own.
+    -**Copy the .env.example files to .env in each relevant directory.**
+    -**Replace the placeholder values in the .env files with your own.**
 
     Run this command in Root folder
     ```bash
