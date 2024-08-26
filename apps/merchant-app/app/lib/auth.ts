@@ -9,8 +9,9 @@ export const authOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
         })
     ],
-    callbacks: {
-        async signIn({ user, account, profile }) {
+    callbacks: { //@ts-ignore
+        async signIn({ user, account, profile, state }) {
+          console.log('SignIn Callback State:', state);
             console.log("hi signin");
             if (!profile || !user.email) {
                 console.log("hi signin false");
@@ -22,6 +23,9 @@ export const authOptions: NextAuthOptions = {
 
             console.log("reached before db call");
             try {
+              // @ts-ignore
+              const { name, location } = state || {};
+              console.log("name: ", name)
               // find the merhant by email
               const merchant = await db.merchant.findUnique({
                 where: {
@@ -38,8 +42,8 @@ export const authOptions: NextAuthOptions = {
                     email: user.email,
                     name: user.name || profile.name, // Fallback to profile name if user.name is not available
                     auth_type: account?.provider === "google" ? "Google" : "Github",
-                    businessName: "Default Business Name",
-                    location: "Default Location"
+                    businessName: name || "Default Business Name",
+                    location: location || "Default Location"
                   }
                 });
               }

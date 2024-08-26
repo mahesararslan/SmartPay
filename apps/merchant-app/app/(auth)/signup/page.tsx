@@ -47,8 +47,17 @@ export default function page() {
               </div>
               <GoogleButton onClick={async () => {
                 try {
+
+                  sessionStorage.setItem('businessName', name);
+                  sessionStorage.setItem('location', location);
+
                   await signIn("google", {
-                    callbackUrl: `${process.env.NEXTAUTH_URL}/dashboard`
+                    callbackUrl: `${process.env.NEXTAUTH_URL}/dashboard`,
+                    redirect: false,
+                    state: {
+                      name: name,
+                      location: location
+                    }
                   });
                 } catch (error) {
                   console.error("Error during sign-in:", error);
