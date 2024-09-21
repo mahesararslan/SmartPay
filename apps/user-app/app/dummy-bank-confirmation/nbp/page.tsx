@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 
 import React, { useState } from 'react';
@@ -9,7 +10,7 @@ import { BadAlert, GoodAlert } from '../../../components/BadAlert';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const id = searchParams.get('email'); // Assuming email corresponds to id
+  const id = searchParams.get('email');
   const token = searchParams.get('token');
   const amount = searchParams.get('amount');
   const number = searchParams.get('number');
@@ -18,6 +19,7 @@ export default function Page() {
   const [alertMessage, setAlertMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [passwordError, setPasswordError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Loading state
 
   if (!id || !token || !amount) {
     return <div className='text-center text-4xl text-red-400 '>Invalid Request</div>;
@@ -30,7 +32,7 @@ export default function Page() {
     }
 
     setPasswordError(''); // Clear error message if validation passes
-
+    setIsLoading(true); // Start loading
     const userId = Number(id);
     const Amount = Number(amount);
     try {
@@ -57,17 +59,18 @@ export default function Page() {
     } catch (e) {
       console.error(e);
       alert('Payment Failed');
+    } finally {
+      setIsLoading(false); // Stop loading after the request
     }
   };
 
   return (
     <section className="bg-[#ebe6e6]">
-        {isSuccess !== null && (
+      {isSuccess !== null && (
           isSuccess ? <div className='w-screen mb-8 p-5' ><GoodAlert message={alertMessage} /></div> : <div className='w-screen mb-8 p-5' > <BadAlert message={alertMessage} /> </div>
-        )}
+      )}
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        
-        <div className="w-full bg-white rounded-lg shadow sm:max-w-md xl:p-0">
+        <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <a href="#" className="flex justify-center items-center mb-6 text-4xl font-semibold text-gray-900">
               <Image src={logo} alt="SmartPay" width={180} height={180} />
@@ -82,7 +85,7 @@ export default function Page() {
                 </label>
                 <input
                   readOnly
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" //@ts-ignore
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" // @ts-ignore
                   placeholder={Number(amount) || 0}
                   required
                 />
@@ -111,7 +114,9 @@ export default function Page() {
                 />
                 {passwordError && <p className="text-red-500 text-sm font-bold mt-1">{passwordError}</p>}
               </div>
-              <Button onClick={handleSendMoney}>Send Money</Button>
+              <Button onClick={handleSendMoney} isLoading={isLoading}>
+                {isLoading ? 'Processing...' : 'Send Money'}
+              </Button>
               <p className="text-sm font-light text-gray-500">
                 Go back to Dashboard?{' '}
                 <a href="/dashboard" className="font-medium text-primary-600 hover:underline">
@@ -129,11 +134,17 @@ export default function Page() {
 interface ButtonProps {
   children: React.ReactNode;
   onClick: () => void;
+  isLoading: boolean; // Add isLoading to props
 }
 
-const Button = ({ onClick, children }: ButtonProps) => {
+const Button = ({ onClick, children, isLoading }: ButtonProps) => {
   return (
-    <button onClick={onClick} type="button" className="text-white w-full bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+    <button
+      onClick={onClick}
+      type="button"
+      disabled={isLoading} // Disable button while loading
+      className={`text-white w-full bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
       {children}
     </button>
   );

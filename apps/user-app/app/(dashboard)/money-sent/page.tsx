@@ -3,9 +3,9 @@ import doneImg from "../../verify.png";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation"; // Correct import
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 
-export default function MoneySent() {
+function MoneySentContent() {
     const searchParams = useSearchParams();
     const amount = searchParams.get('amount');
     const number = searchParams.get('number');
@@ -15,7 +15,7 @@ export default function MoneySent() {
         const now = new Date();
         return {
             date: now.toLocaleDateString(),
-            time: now.toLocaleTimeString()
+            time: now.toLocaleTimeString(),
         };
     }, []); // Empty dependency array ensures this is set only once
 
@@ -30,8 +30,8 @@ export default function MoneySent() {
                     Date: {dateTime.date} <br /> Time: {dateTime.time} <br /> Money Sent to {number}
                 </p>
                 <Link href={"/dashboard"}>
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="mt-5 w-60 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
                     >
                         Dashboard
@@ -39,5 +39,13 @@ export default function MoneySent() {
                 </Link>
             </div>
         </div>
+    );
+}
+
+export default function MoneySent() {
+    return (
+        <Suspense fallback={<div className="w-screen h-screen flex justify-center items-center">Loading...</div>}>
+            <MoneySentContent />
+        </Suspense>
     );
 }

@@ -59,6 +59,8 @@ export const authOptions: NextAuthOptions = {
             }
         },
         async redirect({ url, baseUrl }: { url: string, baseUrl: string }) {
+            console.log("Google Client ID:", process.env.GOOGLE_CLIENT_ID);
+            console.log("Google Client Secret:", process.env.GOOGLE_CLIENT_SECRET);
             console.log("hi redirect");
             console.log("url:", url);
             return url.startsWith(baseUrl) ? url : baseUrl;  

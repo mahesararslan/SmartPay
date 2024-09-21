@@ -35,7 +35,7 @@ export default async function Signup(
                 },
             });
     
-            const balance = await tx.balance.create({
+            await tx.balance.create({
                 data: {
                     amount: 0,
                     userId: user.id,

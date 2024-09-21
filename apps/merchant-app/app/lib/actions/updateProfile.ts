@@ -2,7 +2,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import prisma from "@repo/db/client";
-import bcrypt from "bcrypt";
 
 export default async function UpdateProfile(name: string, businessName: string, location: string) {
     const session = await getServerSession(authOptions);
@@ -16,7 +15,7 @@ export default async function UpdateProfile(name: string, businessName: string, 
 
     try {
 
-        const merchant = await prisma.merchant.update({
+        await prisma.merchant.update({
             where: {
                 email: userEmail,
             },

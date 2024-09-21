@@ -3,6 +3,12 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
+      "env": [
+        "NEXTAUTH_URL: ",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "NEXTAUTH_SECRET"
+      ],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
